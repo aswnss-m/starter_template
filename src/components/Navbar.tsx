@@ -1,27 +1,12 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { type HTMLMotionProps, motion, type Variants } from "motion/react"
+import { type HTMLMotionProps, motion } from "motion/react"
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { IconMenu2, IconX } from '@tabler/icons-react';
+import { IconMenu2, IconTopologyStar2, IconX } from '@tabler/icons-react';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 export function Navbar() {
-    const navbarVariants: Variants = {
-        initial: {
-            y: -100,
-            opacity: 0,
-
-        },
-        animate: {
-            y: 0,
-            opacity: 1,
-            transition: {
-                duration: 0.5,
-                ease: 'linear'
-            }
-        }
-    }
     return (
         <motion.header
             initial={{
@@ -37,10 +22,14 @@ export function Navbar() {
                 }
             }}
             className={'w-full h-fit bg-primary text-primary-foreground font-medium text-base flex items-center justify-center'}>
-            <motion.nav className={'w-full max-w-screen-2xl h-fit bg-inherit p-4 flex justify-between items-center'}>
+            <motion.nav className={'w-full max-w-screen-2xl h-fit bg-inherit p-4 flex items-center gap-4'}>
                 <NavLogo>
-                    Logo
+                    <div className="flex gap-2 items-center">
+                        <IconTopologyStar2 />
+                        <h1>ACME</h1>
+                    </div>
                 </NavLogo>
+                <NavSpacer />
                 <NavLinks />
             </motion.nav>
         </motion.header>
@@ -117,5 +106,11 @@ export function NavLinks() {
                 </motion.div>
             )}
         </div>
+    )
+}
+
+export function NavSpacer() {
+    return (
+        <div className={'w-full flex h-full bg-red-500'} aria-hidden={true} />
     )
 }
