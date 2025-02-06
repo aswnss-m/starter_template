@@ -2,6 +2,10 @@
 import { cn } from "@/lib/utils";
 import { type HTMLMotionProps, motion, type Variants } from "motion/react"
 import Link from "next/link";
+import { Button } from "./ui/button";
+import { IconMenu2, IconX } from '@tabler/icons-react';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 export function Navbar() {
     const navbarVariants: Variants = {
         initial: {
@@ -74,17 +78,44 @@ export function NavLinks() {
             url: "/blog"
         }
     ]
+    const [ showMenu, setShowMenu ] = useState(false);
+    const router = useRouter();
     return (
-        <motion.ul className={'flex gap-4'}>
-            {
-                navLinks.map((link) => (
-                    <motion.li key={link.name}>
-                        <Link title={link.name} href={link.url}>
-                            {link.name}
-                        </Link>
-                    </motion.li>
-                ))
-            }
-        </motion.ul>
+        <div className={'relative'}>
+            <motion.ul className={'hidden md:flex gap-4'} aria-label="Menu" >
+                {
+                    navLinks.map((link) => (
+                        <motion.li key={link.name}>
+                            <Link title={link.name} href={link.url} onMouseEnter={() => { router.prefetch(link.url); }} prefetch={false}>
+                                {link.name}
+                            </Link>
+                        </motion.li>
+                    ))
+                }
+            </motion.ul>
+            <Button size={'icon'} variant={'secondary'} className={'flex md:hidden'} onClick={() => { setShowMenu(true) }}>
+                <IconMenu2 />
+            </Button>
+            {showMenu && (
+                <motion.div className={'fixed top-0 left-0 w-full h-screen bg-primary flex z-10'} aria-hidden={showMenu}>
+                    <motion.ul className={'w-full flex flex-col overflow-y-auto'} aria-label="Menu">
+                        <motion.li className={' shrink-0 w-full p-4 text-lg flex items-center justify-end'}>
+                            <Button size={'icon'} variant={'secondary'} onClick={() => { setShowMenu(false) }}>
+                                <IconX />
+                            </Button>
+                        </motion.li>
+                        {
+                            navLinks.map((link) => (
+                                <motion.li key={link.name} className={'hover:bg-accent/10 shrink-0 text-lg flex'}>
+                                    <Link title={link.name} href={link.url} className={'w-full p-4 py-8'} onClick={() => { setShowMenu(false) }} prefetch={false}>
+                                        {link.name}
+                                    </Link>
+                                </motion.li>
+                            ))
+                        }
+                    </motion.ul>
+                </motion.div>
+            )}
+        </div>
     )
 }

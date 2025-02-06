@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "dev:host": "next dev --turbopack --host",
+    "dev:host": "next dev --turbopack --hostname",
     "build": "next build",
     "start": "next start",
     "lint": "pnpm biome lint ./src",
